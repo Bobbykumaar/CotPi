@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Login | COTPI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/school.css">
+<style>
+/* Login Page Specific */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #0b1220; /* space background */
+    font-family: Segoe UI, sans-serif;
+    margin: 0;
+    color: #fff;
+}
+
+.login-container {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-container h1 {
+    margin-bottom: 30px;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    font-size: 16px;
+}
+
+.show-password {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #ccc;
+    cursor: pointer;
+}
+
+.show-password input {
+    margin-right: 8px;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 12px;
+    background: #4da6ff;
+    color: #fff;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.login-container button:hover {
+    background: #ffa500;
+}
+
+.login-container p {
+    margin-top: 15px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+}
+</style>
+</head>
+<body>
+
+<canvas id="space"></canvas>
+<script src="js/space.js"></script>
+
+<div class="login-container">
+    <h1>Student Login</h1>
+    <form id="loginForm">
+        <input type="text" id="rollNumber" placeholder="Roll Number" required>
+        <input type="password" id="password" placeholder="Password" required>
+        
+        <!-- Show Password Checkbox -->
+        <label class="show-password">
+            <input type="checkbox" id="togglePassword"> Show Password
+        </label>
+
+        <button type="submit">Login</button>
+    </form>
+    <p>Enter your Roll Number and Password to access your dashboard</p>
+</div>
+
+<script>
+// Toggle password visibility
+document.getElementById('togglePassword').addEventListener('change', function(){
+    const pwd = document.getElementById('password');
+    if(this.checked){
+        pwd.type = "text";
+    } else {
+        pwd.type = "password";
+    }
+});
+
+// Login logic
+document.getElementById('loginForm').addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const rollNumber = document.getElementById('rollNumber').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    // For demo purposes: simple check
+    const demoRoll = "12345";
+    const demoPass = "password";
+
+    if(rollNumber === demoRoll && password === demoPass){
+        // Save roll number for dashboard personalization
+        localStorage.setItem('studentRoll', rollNumber);
+
+        // Redirect to student dashboard
+        window.location.href = 'student.html';
+    } else {
+        alert("Invalid Roll Number or Password. Please try again.");
+    }
+});
+</script>
+
+</body>
+</html>

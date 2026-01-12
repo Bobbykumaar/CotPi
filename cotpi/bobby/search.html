@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Results | COTPI</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">COTPI</div>
+    <div class="nav-links">
+        <a href="/">Home</a>
+    </div>
+</div>
+
+<h2 class="section-title">
+    Search Results
+</h2>
+
+{% if schools %}
+<div class="school-list">
+    {% for school in schools %}
+    <div class="school-card">
+        <h3>{{ school.name }}</h3>
+        <p>{{ school.city }}, {{ school.state }}</p>
+        <p><strong>Board:</strong> {{ school.board | join(", ") }}</p>
+        <a class="details-btn" href="/school/{{ school.slug }}">View Details</a>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p style="padding:20px;">No schools found.</p>
+{% endif %}
+
+</body>
+</html>

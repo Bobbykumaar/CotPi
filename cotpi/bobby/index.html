@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>COTPI – Find the Best Schools Near You</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="logo">COTPI</div>
+    <div class="nav-links">
+        <a href="#">Add Your School</a>
+    </div>
+</div>
+
+<!-- SEARCH -->
+<form class="search-box" method="get" action="/search">
+    <input type="text" name="name" placeholder="Search by school name">
+    <input type="text" name="city" placeholder="City or Location">
+    <button type="submit">Search</button>
+</form>
+
+<!-- LISTING -->
+<h2 class="section-title">Top Schools</h2>
+
+<div class="school-list">
+    {% for school in schools %}
+    <div class="school-card">
+        <h3>{{ school.name }}</h3>
+        <p class="location">{{ school.city }}, {{ school.state }}</p>
+        <p><strong>Board:</strong> {{ school.board | join(", ") }}</p>
+        <p><strong>Classes:</strong> {{ school.classes }}</p>
+        <a class="details-btn" href="/school/{{ school.slug }}">View Details</a>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- FOOTER -->
+<footer>
+    © 2026 COTPI | Discover. Compare. Decide.
+</footer>
+
+</body>
+</html>

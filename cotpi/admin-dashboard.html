@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard | COTPI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ===== GLOBAL ===== */
+body{
+    margin:0;
+    font-family:Segoe UI, sans-serif;
+    background:#0b1220;
+    color:#fff;
+}
+html{ scroll-behavior:smooth; }
+
+/* ===== NAV ===== */
+.menu-btn{
+    display:none;
+    padding:14px;
+    background:#1a2b4c;
+    font-size:24px;
+    cursor:pointer;
+}
+
+nav{
+    background:#1a2b4c;
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    padding:14px;
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+nav a{
+    color:#fff;
+    text-decoration:none;
+    font-weight:600;
+    font-size:15px;
+}
+nav a:hover,
+nav a.active{
+    color:#ffa500;
+    border-bottom:2px solid #ffa500;
+}
+
+@media(max-width:900px){
+    nav{ display:none; flex-direction:column; }
+    nav.show{ display:flex; }
+    .menu-btn{ display:block; }
+}
+
+/* ===== HEADER ===== */
+header{
+    text-align:center;
+    padding:25px 10px;
+}
+header h1{
+    color:#4da6ff;
+    margin:0;
+}
+
+/* ===== CONTENT ===== */
+section{
+    max-width:1100px;
+    margin:30px auto;
+    background:rgba(255,255,255,0.08);
+    padding:30px;
+    border-radius:14px;
+}
+section h2{ color:#4da6ff; }
+
+/* ===== TABLE ===== */
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+th, td{
+    padding:12px;
+    border-bottom:1px solid rgba(255,255,255,0.2);
+    text-align:left;
+}
+th{ color:#ffa500; }
+
+/* ===== BUTTONS ===== */
+button{
+    padding:8px 14px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:600;
+}
+.approve{ background:#2ecc71; color:#000; }
+.reject{ background:#e74c3c; color:#fff; }
+.resolve{ background:#4da6ff; color:#fff; }
+
+input, textarea{
+    width:100%;
+    padding:10px;
+    border-radius:6px;
+    border:1px solid rgba(255,255,255,0.3);
+    background:rgba(255,255,255,0.05);
+    color:#fff;
+    margin-bottom:15px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Mobile Menu -->
+<div class="menu-btn" onclick="toggleNav()">☰ Admin Menu</div>
+
+<!-- Navigation -->
+<nav id="nav">
+    <a href="#attendance">Attendance</a>
+    <a href="#complaints">Complaints</a>
+    <a href="#payments">Payments</a>
+    <a href="#holidays">Holidays</a>
+    <a href="#leaves">Leave Approval</a>
+</nav>
+
+<header>
+    <h1>Admin Dashboard</h1>
+    <p>School Management Control Panel</p>
+</header>
+
+<!-- ATTENDANCE -->
+<section id="attendance">
+    <h2>Teacher Attendance Regularization</h2>
+    <table>
+        <tr>
+            <th>Teacher</th>
+            <th>Date</th>
+            <th>Reason</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td>Mr. Sharma</td>
+            <td>12-Mar-2026</td>
+            <td>Missed Punch</td>
+            <td>
+                <button class="approve">Approve</button>
+                <button class="reject">Reject</button>
+            </td>
+        </tr>
+    </table>
+</section>
+
+<!-- COMPLAINTS -->
+<section id="complaints">
+    <h2>Complaints & Tickets</h2>
+    <table>
+        <tr>
+            <th>User</th>
+            <th>Role</th>
+            <th>Issue</th>
+            <th>Status</th>
+        </tr>
+        <tr>
+            <td>Parent – John</td>
+            <td>Parent</td>
+            <td>Bus delay</td>
+            <td>
+                <button class="resolve">Resolve</button>
+            </td>
+        </tr>
+    </table>
+</section>
+
+<!-- PAYMENTS -->
+<section id="payments">
+    <h2>Payment Confirmation</h2>
+    <table>
+        <tr>
+            <th>Student</th>
+            <th>Fee Type</th>
+            <th>Amount</th>
+            <th>Status</th>
+        </tr>
+        <tr>
+            <td>John Doe</td>
+            <td>Tuition Fee</td>
+            <td>₹1,80,000</td>
+            <td style="color:#2ecc71;">Success</td>
+        </tr>
+    </table>
+</section>
+
+<!-- HOLIDAYS -->
+<section id="holidays">
+    <h2>Update Holidays</h2>
+    <input type="date">
+    <input type="text" placeholder="Holiday Name">
+    <button class="approve">Add Holiday</button>
+</section>
+
+<!-- LEAVES -->
+<section id="leaves">
+    <h2>Leave Approval</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td>Ms. Neha</td>
+            <td>Teacher</td>
+            <td>15-Mar</td>
+            <td>18-Mar</td>
+            <td>
+                <button class="approve">Approve</button>
+                <button class="reject">Reject</button>
+            </td>
+        </tr>
+    </table>
+</section>
+
+<script>
+function toggleNav(){
+    document.getElementById("nav").classList.toggle("show");
+}
+
+/* Active Nav */
+const sections=document.querySelectorAll("section");
+const links=document.querySelectorAll("nav a");
+window.addEventListener("scroll",()=>{
+    let current="";
+    sections.forEach(sec=>{
+        if(pageYOffset>=sec.offsetTop-150){
+            current=sec.id;
+        }
+    });
+    links.forEach(a=>{
+        a.classList.remove("active");
+        if(a.getAttribute("href")==="#"+current){
+            a.classList.add("active");
+        }
+    });
+});
+</script>
+
+</body>
+</html>

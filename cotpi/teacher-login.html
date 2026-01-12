@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Teacher Login | COTPI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/school.css">
+<style>
+/* Teacher Login Page */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #0b1220; /* space background */
+    font-family: Segoe UI, sans-serif;
+    margin: 0;
+    color: #fff;
+}
+
+.login-container {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-container h1 {
+    margin-bottom: 30px;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    font-size: 16px;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 12px;
+    background: #4da6ff;
+    color: #fff;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.login-container button:hover {
+    background: #ffa500;
+}
+
+.login-container p {
+    margin-top: 15px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+}
+
+/* Show/Hide Password */
+.show-password {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.show-password input[type="checkbox"] {
+    margin-right: 8px;
+}
+</style>
+</head>
+<body>
+
+<canvas id="space"></canvas>
+<script src="js/space.js"></script>
+
+<div class="login-container">
+    <h1>Teacher Login</h1>
+    <form id="teacherLoginForm">
+        <input type="text" id="teacherId" placeholder="Teacher ID" required>
+        <input type="password" id="teacherPassword" placeholder="Password" required>
+
+        <div class="show-password">
+            <input type="checkbox" id="showPassword">
+            <label for="showPassword">Show Password</label>
+        </div>
+
+        <button type="submit">Login</button>
+    </form>
+    <p>Enter your Teacher ID and Password to access your dashboard</p>
+</div>
+
+<script>
+// Show/hide password
+document.getElementById('showPassword').addEventListener('change', function(){
+    const passField = document.getElementById('teacherPassword');
+    passField.type = this.checked ? 'text' : 'password';
+});
+
+// Login logic
+document.getElementById('teacherLoginForm').addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const teacherId = document.getElementById('teacherId').value.trim();
+    const password = document.getElementById('teacherPassword').value.trim();
+
+    // Demo credentials (replace with real backend later)
+    const demoTeacherId = "T12345";
+    const demoPassword = "password";
+
+    if(teacherId === demoTeacherId && password === demoPassword){
+        // Save teacher ID for dashboard personalization
+        localStorage.setItem('teacherId', teacherId);
+
+        // Redirect to Teacher Dashboard
+        window.location.href = 'teacher-dashboard.html';
+    } else {
+        alert("Invalid Teacher ID or Password. Please try again.");
+    }
+});
+</script>
+
+</body>
+</html>

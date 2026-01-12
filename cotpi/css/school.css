@@ -1,0 +1,139 @@
+/* --------------------------- */
+/* Global Styles */
+body {
+    margin: 0;
+    font-family: Segoe UI, sans-serif;
+    background: #0b1220;  /* Space background */
+    color: #fff;
+}
+
+/* Canvas Background */
+#space {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;  
+}
+
+/* Header */
+.school-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(26, 43, 76, 0.9);
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Hamburger Button */
+.menu-btn {
+    font-size: 28px;
+    background: none;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+/* --------------------------- */
+/* Hamburger Menu - Smooth Slide */
+.school-menu {
+    position: absolute;
+    top: 70px;       
+    right: 20px;
+    width: 240px;    
+    background: rgba(0, 0, 0, 0.9);  
+    border-radius: 0 0 10px 10px;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.4s ease-out;
+    z-index: 999;
+}
+
+.school-menu.show {
+    max-height: 500px; /* enough to show all items */
+}
+
+.school-menu a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: #fff;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    transition: background 0.2s;
+}
+
+.school-menu a:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.school-menu a img {
+    margin-right: 10px;
+}
+
+/* --------------------------- */
+/* Content Sections */
+.content {
+    max-width: 1000px;
+    margin: 30px auto;
+    background: rgba(255, 255, 255, 0.08); 
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.content h2 {
+    margin-top: 0;
+}
+
+.content ul {
+    padding-left: 20px;
+}
+
+/* Enquiry Form */
+#enquiryForm input, #enquiryForm textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+#enquiryForm button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    background: #4da6ff;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#enquiryForm button:hover {
+    background: #ffa500;
+}
+
+/* --------------------------- */
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .school-header h1 { font-size: 20px; }
+    .menu-btn { font-size: 30px; }
+
+    .school-menu { right: 0; width: 100%; top: 60px; border-radius: 0; }
+    .school-menu a { font-size: 18px; padding: 16px 20px; }
+
+    .content { padding: 20px; margin: 20px 10px; }
+}
+
+@media (max-width: 480px) {
+    .school-header h1 { font-size: 18px; }
+    .menu-btn { font-size: 28px; }
+    .school-menu a { font-size: 16px; padding: 14px 18px; }
+    .content { padding: 15px; margin: 15px 10px; }
+}

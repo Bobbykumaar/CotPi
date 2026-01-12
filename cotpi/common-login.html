@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>COTPI | Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:Segoe UI, sans-serif;
+    background:#0b1220;
+    color:#fff;
+}
+
+/* LOGIN CARD */
+.login-box{
+    width:100%;
+    max-width:380px;
+    background:rgba(255,255,255,0.08);
+    padding:30px;
+    border-radius:14px;
+    box-shadow:0 0 30px rgba(0,0,0,0.5);
+}
+
+.login-box h1{
+    text-align:center;
+    color:#4da6ff;
+    margin-bottom:8px;
+}
+
+.login-box p{
+    text-align:center;
+    font-size:14px;
+    opacity:0.7;
+    margin-bottom:25px;
+}
+
+/* INPUTS */
+label{
+    font-size:14px;
+    display:block;
+    margin-bottom:6px;
+}
+
+select, input{
+    width:100%;
+    padding:12px;
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,0.3);
+    background:rgba(255,255,255,0.05);
+    color:#fff;
+    margin-bottom:18px;
+}
+
+select option{
+    color:#000;
+}
+
+/* BUTTON */
+button{
+    width:100%;
+    padding:12px;
+    background:#4da6ff;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+    font-weight:600;
+    color:#fff;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#ffa500;
+}
+
+/* FOOTER */
+.footer{
+    text-align:center;
+    margin-top:15px;
+    font-size:13px;
+    opacity:0.6;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+    <h1>COTPI Login</h1>
+    <p>Secure School Management Portal</p>
+
+    <label>Login As</label>
+    <select id="role">
+        <option value="student">Student</option>
+        <option value="parent">Parent</option>
+        <option value="teacher">Teacher</option>
+        <option value="admin">Admin</option>
+    </select>
+
+    <label>Roll Number / ID</label>
+    <input type="text" id="userid" placeholder="Enter Roll No or ID">
+
+    <label>Password</label>
+    <input type="password" id="password" placeholder="Enter Password">
+
+    <button onclick="login()">Login</button>
+
+    <div class="footer">
+        © 2026 COTPI Education
+    </div>
+</div>
+
+<script>
+function login(){
+    const role = document.getElementById("role").value;
+    const id = document.getElementById("userid").value;
+    const pass = document.getElementById("password").value;
+
+    if(id === "" || pass === ""){
+        alert("Please fill all fields");
+        return;
+    }
+
+    /* 🔐 TEMP DEMO REDIRECT (replace with backend auth) */
+    if(role === "student"){
+        window.location.href = "student-dashboard.html";
+    }
+    else if(role === "parent"){
+        window.location.href = "parent-dashboard.html";
+    }
+    else if(role === "teacher"){
+        window.location.href = "teacher-dashboard.html";
+    }
+    else if(role === "admin"){
+        window.location.href = "admin-dashboard.html";
+    }
+}
+</script>
+
+</body>
+</html>

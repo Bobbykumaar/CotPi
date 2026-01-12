@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Parent Dashboard | COTPI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin:0;
+    font-family: Segoe UI, sans-serif;
+    background:#0b1220;
+    color:#fff;
+}
+#space {
+    position:fixed;
+    inset:0;
+    z-index:-1;
+}
+html { scroll-behavior:smooth; }
+
+/* TOP NAV */
+.top-nav {
+    background:#1a2b4c;
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    padding:14px;
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+.top-nav a {
+    color:#fff;
+    text-decoration:none;
+    font-weight:600;
+    font-size:15px;
+}
+.top-nav a:hover,
+.top-nav a.active {
+    color:#ffa500;
+    border-bottom:2px solid #ffa500;
+}
+
+/* MOBILE */
+.menu-btn {
+    display:none;
+    font-size:26px;
+    cursor:pointer;
+    color:#fff;
+}
+@media(max-width:900px){
+    .top-nav { display:none; flex-direction:column; }
+    .top-nav.show { display:flex; }
+    .menu-btn {
+        display:block;
+        position:sticky;
+        top:0;
+        background:#1a2b4c;
+        padding:12px 18px;
+        z-index:11;
+    }
+}
+
+/* HEADER */
+.school-header {
+    text-align:center;
+    padding:25px 10px;
+}
+.school-header h1 {
+    color:#4da6ff;
+    margin:0;
+}
+
+/* CONTENT */
+.content {
+    max-width:1000px;
+    margin:30px auto;
+    background:rgba(255,255,255,0.08);
+    padding:30px;
+    border-radius:12px;
+}
+.content h2 { color:#4da6ff; }
+
+/* ATTENDANCE */
+.calendar {
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:10px;
+    margin-top:15px;
+}
+.day {
+    padding:14px;
+    border-radius:8px;
+    text-align:center;
+}
+.present { background:#2ecc71; }
+.absent { background:#e74c3c; }
+.holiday { background:#f1c40f; color:#000; }
+
+/* FORM */
+select, input, textarea {
+    width:100%;
+    padding:10px;
+    border-radius:6px;
+    border:1px solid rgba(255,255,255,0.3);
+    background:rgba(255,255,255,0.05);
+    color:#fff;
+    margin-bottom:15px;
+}
+button {
+    background:#4da6ff;
+    border:none;
+    padding:10px 16px;
+    color:#fff;
+    border-radius:6px;
+    cursor:pointer;
+}
+button:hover { background:#ffa500; }
+
+/* DOWNLOAD */
+.downloads a {
+    display:block;
+    margin:10px 0;
+    color:#4da6ff;
+    text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="space"></canvas>
+
+<!-- Mobile Button -->
+<div class="menu-btn" onclick="toggleNav()">☰ Menu</div>
+
+<!-- NAV -->
+<nav class="top-nav" id="topNav">
+    <a href="#profile">Profile</a>
+    <a href="#attendance">Attendance</a>
+    <a href="#results">Results</a>
+    <a href="#payment">Payment</a>
+    <a href="#downloads">Downloads</a>
+    <a href="#complaint">Complaint</a>
+</nav>
+
+<header class="school-header">
+    <h1>Parent Dashboard</h1>
+    <p id="greeting"></p>
+</header>
+
+<section class="content" id="profile">
+    <h2>Student Profile</h2>
+    <p><b>Name:</b> John Doe</p>
+    <p><b>Class:</b> 5A</p>
+    <p><b>Roll No:</b> 23</p>
+</section>
+
+<section class="content" id="attendance">
+    <h2>Student Attendance</h2>
+    <div class="calendar">
+        <div class="day present">1</div>
+        <div class="day present">2</div>
+        <div class="day absent">3</div>
+        <div class="day present">4</div>
+        <div class="day holiday">5</div>
+        <div class="day present">6</div>
+        <div class="day present">7</div>
+    </div>
+</section>
+
+<section class="content" id="results">
+    <h2>Results</h2>
+    <ul>
+        <li>Math – 88%</li>
+        <li>Science – 91%</li>
+        <li>English – 85%</li>
+    </ul>
+</section>
+
+<section class="content" id="payment">
+    <h2>Online Payment</h2>
+
+    <select id="feeType">
+        <option value="180000">Tuition Fee – ₹1,80,000</option>
+        <option value="15000">Books Fee – ₹15,000</option>
+        <option value="5000">Exam Fee – ₹5,000</option>
+    </select>
+
+    <input type="number" id="amount" value="180000">
+    <button onclick="payNow()">Pay with Razorpay</button>
+</section>
+
+<section class="content" id="downloads">
+    <h2>Downloads</h2>
+    <div class="downloads">
+        <a href="files/report-card.pdf" download>📄 Report Card</a>
+        <a href="files/fee-receipt.pdf" download>💳 Fee Receipt</a>
+    </div>
+</section>
+
+<section class="content" id="complaint">
+    <h2>Raise a Complaint</h2>
+    <textarea placeholder="Describe your issue..."></textarea>
+    <button>Submit</button>
+</section>
+
+<!-- Razorpay -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script src="js/space.js"></script>
+
+<script>
+function toggleNav(){
+    document.getElementById("topNav").classList.toggle("show");
+}
+
+document.getElementById("feeType").addEventListener("change", function(){
+    document.getElementById("amount").value = this.value;
+});
+
+function payNow() {
+    const amount = document.getElementById("amount").value;
+
+    var options = {
+        key: "rzp_test_XXXXXXXXXX",
+        amount: amount * 100,
+        currency: "INR",
+        name: "COTPI Education Hub",
+        description: "School Fee Payment",
+        handler: function (response) {
+            alert("Payment Successful\nPayment ID: " + response.razorpay_payment_id);
+        }
+    };
+    new Razorpay(options).open();
+}
+
+window.onload = () => {
+    document.getElementById("greeting").innerText = "Welcome, Parent";
+};
+</script>
+
+</body>
+</html>
