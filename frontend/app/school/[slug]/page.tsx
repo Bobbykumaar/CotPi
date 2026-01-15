@@ -1,14 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { getSchoolBySlug } from "../../services/schoolService";
 
-export default function SchoolDetailPage({ params }: any) {
-  const { slug } = params;
+export default function SchoolDetailPage() {
+  const params = useParams();
+  const slug = params.slug as string;
+
   const [school, setSchool] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!slug) return;
+
     getSchoolBySlug(slug)
       .then(setSchool)
       .finally(() => setLoading(false));
@@ -39,24 +44,6 @@ export default function SchoolDetailPage({ params }: any) {
       <h2>Fees</h2>
       <p>Admission Fee: ₹{school.fees?.one_time?.admission_fee}</p>
       <p>Security Deposit: ₹{school.fees?.one_time?.security_deposit}</p>
-
-      <hr />
-
-      <h2>Infrastructure</h2>
-      <ul>
-        {school.infrastructure?.academic?.map((item: string) => (
-          <li key={item}>{item}</li>
-        ))}
-      </ul>
-
-      <hr />
-
-      <h2>Events</h2>
-      <ul>
-        {school.events?.competitions?.map((e: string) => (
-          <li key={e}>{e}</li>
-        ))}
-      </ul>
     </div>
   );
 }
