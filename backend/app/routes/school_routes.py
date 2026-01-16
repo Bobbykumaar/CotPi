@@ -5,6 +5,9 @@ from datetime import datetime
 
 school_bp = Blueprint("schools", __name__)
 
+# -------------------------
+# ADD SCHOOL
+# -------------------------
 @school_bp.route("/", methods=["POST"])
 def add_school():
     data = request.json
@@ -14,23 +17,41 @@ def add_school():
     return {"message": "School added"}, 201
 
 
+# -------------------------
+# LIST SCHOOLS (SEARCH + FILTERS)
+# -------------------------
 @school_bp.route("/", methods=["GET"])
 def get_schools():
-    city = request.args.get("city")
     query = {}
+
+    city = request.args.get("city")
+    board = request.args.get("board")
+    search = request.args.get("search")
+
     if city:
         query["address.city"] = city
 
+    if board:
+        query["board"] = board
+
+    if search:
+        query["name"] = {"$regex": search, "$options": "i"}
+
     schools = list(db.schools.find(query))
+
     for s in schools:
         s["_id"] = str(s["_id"])
+
     return jsonify(schools)
 
 
+# -------------------------
+# SINGLE SCHOOL BY SLUG
+# -------------------------
 @school_bp.route("/<slug>", methods=["GET"])
 def get_school(slug):
     school = db.schools.find_one({"slug": slug})
     if not school:
         return {"error": "Not found"}, 404
     school["_id"] = str(school["_id"])
-    return school
+    return jsonify(school)

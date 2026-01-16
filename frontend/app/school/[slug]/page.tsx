@@ -4,6 +4,10 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { getSchoolBySlug } from "../../services/schoolService";
 
+import SchoolHeader from "../../components/school/SchoolHeader";
+import AdmissionSection from "../../components/school/AdmissionSection";
+import FeesSection from "../../components/school/FeesSection";
+
 export default function SchoolDetailPage() {
   const params = useParams();
   const slug = params.slug as string;
@@ -24,26 +28,14 @@ export default function SchoolDetailPage() {
 
   return (
     <div>
-      <h1>{school.name}</h1>
+      {/* ✅ Header */}
+      <SchoolHeader school={school} />
 
-      <p>
-        📍 {school.address?.city}, {school.address?.state}
-      </p>
+      {/* ✅ Admission */}
+      <AdmissionSection admission={school.admission} />
 
-      <p>🏫 Board: {school.board?.join(", ")}</p>
-      <p>⭐ Rating: {school.rating}</p>
-
-      <hr />
-
-      <h2>Admission</h2>
-      <p>Mode: {school.admission?.mode?.join(", ")}</p>
-      <p>Criteria: {school.admission?.criteria}</p>
-
-      <hr />
-
-      <h2>Fees</h2>
-      <p>Admission Fee: ₹{school.fees?.one_time?.admission_fee}</p>
-      <p>Security Deposit: ₹{school.fees?.one_time?.security_deposit}</p>
+      {/* ✅ Fees */}
+      <FeesSection fees={school.fees} />
     </div>
   );
 }
