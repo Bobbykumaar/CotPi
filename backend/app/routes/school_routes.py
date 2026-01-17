@@ -1,13 +1,11 @@
 from flask import Blueprint, request, jsonify
 from app.extensions import db
+from app.serializers.school_serializer import school_list_serializer
 from bson.objectid import ObjectId
 from datetime import datetime
 
 school_bp = Blueprint("schools", __name__)
 
-# -------------------------
-# ADD SCHOOL
-# -------------------------
 @school_bp.route("/", methods=["POST"])
 def add_school():
     data = request.json
@@ -17,9 +15,6 @@ def add_school():
     return {"message": "School added"}, 201
 
 
-# -------------------------
-# LIST SCHOOLS (SEARCH + FILTERS)
-# -------------------------
 @school_bp.route("/", methods=["GET"])
 def get_schools():
     query = {}
@@ -37,21 +32,14 @@ def get_schools():
     if search:
         query["name"] = {"$regex": search, "$options": "i"}
 
-    schools = list(db.schools.find(query))
-
-    for s in schools:
-        s["_id"] = str(s["_id"])
-
-    return jsonify(schools)
+    schools = db.schools.find(query)
+    return jsonify([school_list_serializer(s) for s in schools])
 
 
-# -------------------------
-# SINGLE SCHOOL BY SLUG
-# -------------------------
 @school_bp.route("/<slug>", methods=["GET"])
 def get_school(slug):
     school = db.schools.find_one({"slug": slug})
     if not school:
         return {"error": "Not found"}, 404
     school["_id"] = str(school["_id"])
-    return jsonify(school)
+    return school
