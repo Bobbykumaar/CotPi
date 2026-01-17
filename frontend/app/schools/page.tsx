@@ -10,18 +10,36 @@ export default function SchoolsPage() {
   const [board, setBoard] = useState("");
   const [search, setSearch] = useState("");
 
+  const [page, setPage] = useState(1);
+  const limit = 10;
+  const [total, setTotal] = useState(0);
+
   const fetchSchools = async () => {
-    const data = await getSchools({
+    const res = await getSchools({
       city: city || undefined,
       board: board || undefined,
       search: search || undefined,
+      page,
+      limit,
     });
-    setSchools(data);
+
+    // backend returns { data, total, page, limit }
+    setSchools(res.data);
+    setTotal(res.total);
   };
 
+  // initial load + page change
   useEffect(() => {
     fetchSchools();
-  }, []);
+  }, [page]);
+
+  // when filters change → reset to page 1
+  const applyFilters = () => {
+    setPage(1);
+    fetchSchools();
+  };
+
+  const totalPages = Math.ceil(total / limit);
 
   return (
     <div>
@@ -48,7 +66,7 @@ export default function SchoolsPage() {
           <option value="State Board">State Board</option>
         </select>
 
-        <button onClick={fetchSchools}>Search</button>
+        <button onClick={applyFilters}>Search</button>
       </div>
 
       {/* 📋 RESULTS */}
@@ -57,6 +75,29 @@ export default function SchoolsPage() {
       {schools.map((s) => (
         <SchoolCard key={s.id} school={s} />
       ))}
+
+      {/* 📄 PAGINATION */}
+      {totalPages > 1 && (
+        <div style={{ marginTop: 20, display: "flex", gap: 10 }}>
+          <button
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+          >
+            Prev
+          </button>
+
+          <span>
+            Page {page} of {totalPages}
+          </span>
+
+          <button
+            disabled={page === totalPages}
+            onClick={() => setPage(page + 1)}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,0 +1,17 @@
+[33m22452df[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{0}: reset: moving to HEAD@{1}
+[33m87544ca[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{1}: pull origin main: Fast-forward
+[33m22452df[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{2}: reset: moving to HEAD~1
+[33me68281c[m HEAD@{3}: reset: moving to HEAD~1
+[33m005ce17[m HEAD@{4}: reset: moving to HEAD~1
+[33m87544ca[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{5}: pull origin main: Fast-forward
+[33m005ce17[m HEAD@{6}: commit: step 7 cpompleted with the [slug] detail file
+[33me68281c[m HEAD@{7}: commit: Till step 6, stuck at step 7
+[33m22452df[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{8}: pull origin main: Merge made by the 'ort' strategy.
+[33m4cb6807[m HEAD@{9}: pull origin main: Merge made by the 'ort' strategy.
+[33m6506692[m HEAD@{10}: commit: changing rough for check
+[33m3cbf1bc[m[33m ([m[1;33mtag: [m[1;33mweek1[m[33m)[m HEAD@{11}: commit: Changes required at front end local host run
+[33mfddb6a8[m HEAD@{12}: commit: data chamged
+[33medc4cfd[m HEAD@{13}: commit: New files wriiten
+[33m56e752c[m HEAD@{14}: commit: We have initialized a structure, thanks
+[33m6c43b8d[m HEAD@{15}: pull origin main: Fast-forward
+[33md5860b9[m HEAD@{16}: clone: from https://github.com/Bobbykumaar/CotPi.git

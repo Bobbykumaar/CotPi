@@ -17,11 +17,15 @@ def add_school():
 
 @school_bp.route("/", methods=["GET"])
 def get_schools():
-    query = {}
-
     city = request.args.get("city")
     board = request.args.get("board")
     search = request.args.get("search")
+
+    page = int(request.args.get("page", 1))
+    limit = int(request.args.get("limit", 10))
+    skip = (page - 1) * limit
+
+    query = {}
 
     if city:
         query["address.city"] = city
@@ -32,8 +36,24 @@ def get_schools():
     if search:
         query["name"] = {"$regex": search, "$options": "i"}
 
-    schools = db.schools.find(query)
-    return jsonify([school_list_serializer(s) for s in schools])
+    schools_cursor = (
+        db.schools.find(query)
+        .skip(skip)
+        .limit(limit)
+    )
+
+    schools = list(schools_cursor)
+    total = db.schools.count_documents(query)
+
+    for s in schools:
+        s["_id"] = str(s["_id"])
+
+    return jsonify({
+        "data": schools,
+        "total": total,
+        "page": page,
+        "limit": limit
+    })
 
 
 @school_bp.route("/<slug>", methods=["GET"])
