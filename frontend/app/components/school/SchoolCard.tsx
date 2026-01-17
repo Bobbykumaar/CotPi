@@ -2,21 +2,24 @@ import Link from "next/link";
 
 export default function SchoolCard({ school }: any) {
   return (
-    <div style={{ border: "1px solid #ddd", padding: 16, marginBottom: 12 }}>
-      <h3>
-        <Link href={`/school/${school.slug}`}>
-          {school.name}
-        </Link>
-      </h3>
+    <Link href={`/schools/${school.slug}`} style={{ textDecoration: "none", color: "inherit" }}>
+      <div style={{ border: "1px solid #ddd", padding: 16, marginBottom: 12 }}>
+        <h3>{school.name}</h3>
 
-      <p>
-        {school.address
-          ? `${school.address.city}, ${school.address.state}`
-          : "Location not available"}
-      </p>
+        <p>
+          {school.address
+            ? `${school.address.city}, ${school.address.state}`
+            : "Location not available"}
+        </p>
 
-      <p>Board: {school.board?.join(", ")}</p>
-      <p>⭐ {school.rating}</p>
-    </div>
+        {school.board && (
+          <p>
+            Board: {Array.isArray(school.board) ? school.board.join(", ") : school.board}
+          </p>
+        )}
+
+        {school.rating && <p>⭐ {school.rating}</p>}
+      </div>
+    </Link>
   );
 }
