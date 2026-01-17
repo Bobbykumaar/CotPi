@@ -3,49 +3,42 @@
 import { useEffect, useState } from "react";
 import { getSchools } from "../services/schoolService";
 import SchoolCard from "../components/school/SchoolCard";
+import Pagination from "../components/common/Pagination";
 
 export default function SchoolsPage() {
   const [schools, setSchools] = useState<any[]>([]);
+  const [total, setTotal] = useState(0);
+
+  const [page, setPage] = useState(1);
+  const limit = 10;
+
   const [city, setCity] = useState("");
   const [board, setBoard] = useState("");
   const [search, setSearch] = useState("");
 
-  const [page, setPage] = useState(1);
-  const limit = 10;
-  const [total, setTotal] = useState(0);
-
-  const fetchSchools = async () => {
+  const fetchSchools = async (pageNumber = page) => {
     const res = await getSchools({
       city: city || undefined,
       board: board || undefined,
       search: search || undefined,
-      page,
+      page: pageNumber,
       limit,
     });
 
-    // backend returns { data, total, page, limit }
     setSchools(res.data);
     setTotal(res.total);
+    setPage(pageNumber);
   };
 
-  // initial load + page change
   useEffect(() => {
-    fetchSchools();
-  }, [page]);
-
-  // when filters change → reset to page 1
-  const applyFilters = () => {
-    setPage(1);
-    fetchSchools();
-  };
-
-  const totalPages = Math.ceil(total / limit);
+    fetchSchools(1); // reset to page 1 on load
+  }, []);
 
   return (
     <div>
       <h1>Search Schools</h1>
 
-      {/* 🔍 FILTER BAR */}
+      {/* FILTER BAR */}
       <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
         <input
           placeholder="Search by name"
@@ -63,41 +56,21 @@ export default function SchoolsPage() {
           <option value="">All Boards</option>
           <option value="CBSE">CBSE</option>
           <option value="ICSE">ICSE</option>
-          <option value="State Board">State Board</option>
         </select>
 
-        <button onClick={applyFilters}>Search</button>
+        <button onClick={() => fetchSchools(1)}>Search</button>
       </div>
-
-      {/* 📋 RESULTS */}
-      {schools.length === 0 && <p>No schools found</p>}
 
       {schools.map((s) => (
         <SchoolCard key={s.id} school={s} />
       ))}
 
-      {/* 📄 PAGINATION */}
-      {totalPages > 1 && (
-        <div style={{ marginTop: 20, display: "flex", gap: 10 }}>
-          <button
-            disabled={page === 1}
-            onClick={() => setPage(page - 1)}
-          >
-            Prev
-          </button>
-
-          <span>
-            Page {page} of {totalPages}
-          </span>
-
-          <button
-            disabled={page === totalPages}
-            onClick={() => setPage(page + 1)}
-          >
-            Next
-          </button>
-        </div>
-      )}
+      <Pagination
+        total={total}
+        page={page}
+        limit={limit}
+        onPageChange={(p) => fetchSchools(p)}
+      />
     </div>
   );
 }
