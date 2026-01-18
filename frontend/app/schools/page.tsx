@@ -5,6 +5,9 @@ import { getSchools } from "../services/schoolService";
 import SchoolCard from "../components/school/SchoolCard";
 import Pagination from "../components/common/Pagination";
 
+import ReviewForm from "@/app/components/review/ReviewForm";
+import ReviewList from "@/app/components/review/ReviewList";
+
 export default function SchoolsPage() {
   const [schools, setSchools] = useState<any[]>([]);
   const [total, setTotal] = useState(0);
@@ -31,7 +34,7 @@ export default function SchoolsPage() {
   };
 
   useEffect(() => {
-    fetchSchools(1); // reset to page 1 on load
+    fetchSchools(1);
   }, []);
 
   return (
@@ -61,8 +64,24 @@ export default function SchoolsPage() {
         <button onClick={() => fetchSchools(1)}>Search</button>
       </div>
 
-      {schools.map((s) => (
-        <SchoolCard key={s.id} school={s} />
+      {/* SCHOOL LIST */}
+      {schools.map((school) => (
+        <div key={school.id} style={{ marginBottom: 30 }}>
+          <SchoolCard school={school} />
+
+          {/* ⭐ RATING */}
+          <p>
+            ⭐ {school.rating || 0} ({school.review_count || 0} reviews)
+          </p>
+
+          {/* 📝 REVIEW FORM */}
+          <ReviewForm slug={school.slug} />
+
+          {/* 📋 REVIEW LIST */}
+          <ReviewList slug={school.slug} />
+
+          <hr />
+        </div>
       ))}
 
       <Pagination

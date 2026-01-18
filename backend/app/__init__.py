@@ -19,6 +19,9 @@ def create_app():
     from app.routes.pending_school_routes import pending_school_bp
     app.register_blueprint(pending_school_bp, url_prefix="/api/pending-schools")
 
+    from app.routes.review_routes import review_bp
+    app.register_blueprint(review_bp, url_prefix="/api/reviews")
+
     @app.route("/")
     def home():
         return {"status": "CotPi backend running"}
