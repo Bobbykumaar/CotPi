@@ -5,37 +5,51 @@ import { getSchools } from "../services/schoolService";
 import SchoolCard from "../components/school/SchoolCard";
 import Pagination from "../components/common/Pagination";
 
-import ReviewForm from "@/app/components/review/ReviewForm";
-import ReviewList from "@/app/components/review/ReviewList";
+interface School {
+  _id: string;
+  name: string;
+  city?: string;
+  board?: string;
+  rating?: number;
+  review_count?: number;
+}
 
 export default function SchoolsPage() {
-  const [schools, setSchools] = useState<any[]>([]);
-  const [total, setTotal] = useState(0);
-
+  const [schools, setSchools] = useState<School[]>([]);
   const [page, setPage] = useState(1);
-  const limit = 10;
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const [city, setCity] = useState("");
   const [board, setBoard] = useState("");
   const [search, setSearch] = useState("");
 
-  const fetchSchools = async (pageNumber = page) => {
-    const res = await getSchools({
-      city: city || undefined,
-      board: board || undefined,
-      search: search || undefined,
-      page: pageNumber,
-      limit,
-    });
+  const fetchSchools = async (p = page) => {
+    setLoading(true);
+    try {
+      const res = await getSchools({
+        page: p,
+        limit: 10,
+        city: city || undefined,
+        board: board || undefined,
+        search: search || undefined,
+      });
 
-    setSchools(res.data);
-    setTotal(res.total);
-    setPage(pageNumber);
+      setSchools(res.data);
+      setTotalPages(res.totalPages);
+      setPage(p);
+    } catch (error) {
+      console.error("Failed to fetch schools", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  // Debounce search input
   useEffect(() => {
-    fetchSchools(1);
-  }, []);
+    const timeout = setTimeout(() => fetchSchools(1), 500);
+    return () => clearTimeout(timeout);
+  }, [search, city, board]);
 
   return (
     <div>
@@ -48,48 +62,34 @@ export default function SchoolsPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-
         <input
           placeholder="City"
           value={city}
           onChange={(e) => setCity(e.target.value)}
         />
-
         <select value={board} onChange={(e) => setBoard(e.target.value)}>
           <option value="">All Boards</option>
           <option value="CBSE">CBSE</option>
           <option value="ICSE">ICSE</option>
+          <option value="State Board">State Board</option>
         </select>
-
-        <button onClick={() => fetchSchools(1)}>Search</button>
+        <button onClick={() => fetchSchools(1)} disabled={loading}>
+          {loading ? "Searching..." : "Search"}
+        </button>
       </div>
 
+      <hr />
+
       {/* SCHOOL LIST */}
-      {schools.map((school) => (
-        <div key={school.id} style={{ marginBottom: 30 }}>
-          <SchoolCard school={school} />
+      {loading && <p>Loading schools...</p>}
+      {!loading && schools.length === 0 && <p>No schools found.</p>}
+      {!loading &&
+        schools.map((school) => <SchoolCard key={school._id} school={school} />)}
 
-          {/* ⭐ RATING */}
-          <p>
-            ⭐ {school.rating || 0} ({school.review_count || 0} reviews)
-          </p>
-
-          {/* 📝 REVIEW FORM */}
-          <ReviewForm slug={school.slug} />
-
-          {/* 📋 REVIEW LIST */}
-          <ReviewList slug={school.slug} />
-
-          <hr />
-        </div>
-      ))}
-
-      <Pagination
-        total={total}
-        page={page}
-        limit={limit}
-        onPageChange={(p) => fetchSchools(p)}
-      />
+      {/* PAGINATION */}
+      {!loading && totalPages > 1 && (
+        <Pagination page={page} totalPages={totalPages} onPageChange={(p) => fetchSchools(p)} />
+      )}
     </div>
   );
 }

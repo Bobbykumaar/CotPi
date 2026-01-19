@@ -7,43 +7,47 @@ type Props = {
   onPageChange: (page: number) => void;
 };
 
-export default function Pagination({
-  total,
-  page,
-  limit,
-  onPageChange,
-}: Props) {
+export default function Pagination({ total, page, limit, onPageChange }: Props) {
   const totalPages = Math.ceil(total / limit);
-
   if (totalPages <= 1) return null;
 
   return (
-    <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
+    <nav aria-label="Pagination" style={{ display: "flex", gap: 6, marginTop: 20, flexWrap: "wrap" }}>
       <button
-        disabled={page === 1}
         onClick={() => onPageChange(page - 1)}
+        disabled={page === 1}
+        aria-label="Go to previous page"
       >
         Prev
       </button>
 
-      {Array.from({ length: totalPages }).map((_, i) => (
-        <button
-          key={i}
-          style={{
-            fontWeight: page === i + 1 ? "bold" : "normal",
-          }}
-          onClick={() => onPageChange(i + 1)}
-        >
-          {i + 1}
-        </button>
-      ))}
+      {Array.from({ length: totalPages }).map((_, i) => {
+        const pageNumber = i + 1;
+        return (
+          <button
+            key={pageNumber}
+            onClick={() => onPageChange(pageNumber)}
+            aria-current={page === pageNumber ? "page" : undefined}
+            style={{
+              fontWeight: page === pageNumber ? "bold" : "normal",
+              color: page === pageNumber ? "#fff" : "#000",
+              backgroundColor: page === pageNumber ? "#0070f3" : "transparent",
+              padding: "4px 8px",
+              borderRadius: 4,
+            }}
+          >
+            {pageNumber}
+          </button>
+        );
+      })}
 
       <button
-        disabled={page === totalPages}
         onClick={() => onPageChange(page + 1)}
+        disabled={page === totalPages}
+        aria-label="Go to next page"
       >
         Next
       </button>
-    </div>
+    </nav>
   );
 }
